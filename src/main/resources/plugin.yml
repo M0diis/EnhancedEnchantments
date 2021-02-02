@@ -1,0 +1,14 @@
+main: me.M0dii.EnhancedEnchant.EnhancedEnchant
+name: EnhancedEnchantments
+author: M0dii
+version: 1.1
+api-version: 1.16
+depend:
+  - mcMMO
+commands:
+  enhancedenchant:
+    description: Enchant command.
+    aliases: [ee, ae]
+  unenchant:
+    description: Unenchant command.
+    aliases: [unench, unen, ue]

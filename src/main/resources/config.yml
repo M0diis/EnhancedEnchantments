@@ -1,0 +1,35 @@
+advanced-enchantments:
+  allow-right-click-book: true
+  allow-inventory-combine: true
+  allow-anvil-combine: true
+  allow-3x3-till: true
+
+enchants:
+  telepathy:
+    enabled: true
+    displayname: "&b&lTelepathy I"
+    lore:
+      - "&7Drag book and drop on Item."
+      - "&7Right click for more Info."
+      - ""
+      - "&7Will automatically send"
+      - "&7mined blocks to your inventory."
+      - ""
+      - "&6Enchantable Items: &aTools"
+  plow:
+    enabled: true
+    displayname: "&d&lPlow I"
+    lore:
+      - "&7Drag book and drop on Item."
+      - "&7Right click for more Info."
+      - ""
+      - "&7Will automatically plant seeds from hotbar."
+      - "&7Will till a 3x3 area to the right of till."
+      - ""
+      - "&6Enchantable Items: &aHoes"
+
+messages:
+  no-permission: "&c&lYou do not have permission to do this!"
+  player-not-found: "&c&lPlayer not found."
+  enchantment-list: "&9&lCurrent Enchants:\n&3&lTelepathy, Plow"
+  usage: "&c&lCommand usage: &d/&7ee <enchantment> <player>"
