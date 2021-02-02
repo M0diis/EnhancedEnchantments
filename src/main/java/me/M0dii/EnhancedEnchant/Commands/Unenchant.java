@@ -1,6 +1,7 @@
 package me.M0dii.EnhancedEnchant.Commands;
 
-import me.M0dii.EnhancedEnchant.Utils.Data.DataManager;
+import me.M0dii.EnhancedEnchant.EnhancedEnchant;
+import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
 import me.M0dii.EnhancedEnchant.Enchants.CustomEnchants;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,8 +17,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 
-public class Unenchant implements org.bukkit.command.CommandExecutor
+public class Unenchant implements CommandExecutor
 {
+    private final EnhancedEnchant plugin;
+    private final ConfigManager cfg;
+    
+    public Unenchant(EnhancedEnchant plugin)
+    {
+        this.plugin = plugin;
+        
+        this.cfg = plugin.getCfg();
+    }
+    
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd,
                              @Nonnull String label, @Nonnull String[] args)
     {
@@ -25,11 +37,11 @@ public class Unenchant implements org.bukkit.command.CommandExecutor
             sender.sendMessage(ChatColor.RED + "Console cannot perform this command"); return true;
         }
         
-        Player player = (Player)sender; DataManager data = DataManager.getInstance();
+        Player player = (Player)sender;
         
-        if(!player.hasPermission("ae.unenchant"))
+        if(!player.hasPermission("enhancedenchant.command.unenchant"))
         {
-            sender.sendMessage(data.format(data.getConfig().getString("messages.no-permission")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.no-permission")));
             
             return true;
         }

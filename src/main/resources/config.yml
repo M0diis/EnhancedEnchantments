@@ -24,7 +24,7 @@ enchants:
       - "&7Right click for more Info."
       - ""
       - "&7Will automatically plant seeds from hotbar."
-      - "&7Will till a 3x3 area to the right of till."
+      - "&7Will till a 3x1 area to the left of till."
       - ""
       - "&6Enchantable Items: &aHoes"
 

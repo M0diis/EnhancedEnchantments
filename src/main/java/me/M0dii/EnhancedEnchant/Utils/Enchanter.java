@@ -1,6 +1,7 @@
 package me.M0dii.EnhancedEnchant.Utils;
 
-import me.M0dii.EnhancedEnchant.Utils.Data.DataManager;
+import me.M0dii.EnhancedEnchant.EnhancedEnchant;
+import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
 import me.M0dii.EnhancedEnchant.Enchants.CustomEnchants;
 
 import java.util.ArrayList;
@@ -14,7 +15,9 @@ public class Enchanter
 {
     public static ItemStack getBook(String type)
     {
-        DataManager data = DataManager.getInstance();
+        EnhancedEnchant plugin = EnhancedEnchant.getPlugin(EnhancedEnchant.class);
+        
+        ConfigManager cfg = plugin.getCfg();
         
         ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         
@@ -22,13 +25,13 @@ public class Enchanter
         
         ItemMeta meta = item.getItemMeta();
         
-        meta.setDisplayName(data.format(data.getConfig().getString("enchants." + type.toLowerCase() + ".displayname")));
+        meta.setDisplayName(plugin.format(cfg.getConfig().getString("enchants." + type.toLowerCase() + ".displayname")));
         
         List<String> lore = new ArrayList<>();
         
-        for(String l : data.getConfig().getStringList("enchants." + type.toLowerCase() + ".lore"))
+        for(String l : cfg.getConfig().getStringList("enchants." + type.toLowerCase() + ".lore"))
         {
-            lore.add(data.format(l));
+            lore.add(plugin.format(l));
         }
         
         meta.setLore(lore);

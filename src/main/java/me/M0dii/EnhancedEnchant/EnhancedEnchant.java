@@ -11,6 +11,7 @@ import me.M0dii.EnhancedEnchant.Listeners.TillInteract;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.CustomCombine;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTelepathy;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTill;
+import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
@@ -19,10 +20,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class EnhancedEnchant extends JavaPlugin
 {
     private PluginManager pm;
+    private ConfigManager cfg;
+    
+    public ConfigManager getCfg()
+    {
+        return this.cfg;
+    }
     
     public void onEnable()
     {
         RegisterEnchants.register();
+        
+        this.cfg = new ConfigManager(this);
         
         this.pm = this.getServer().getPluginManager();
         
@@ -54,12 +63,12 @@ public class EnhancedEnchant extends JavaPlugin
         PluginCommand ee = getCommand("enhancedenchant");
         
         if(ee != null)
-            ee.setExecutor(new Enchant());
+            ee.setExecutor(new Enchant(this));
     
         PluginCommand ue = getCommand("unenchant");
     
         if(ue != null)
-            ue.setExecutor(new Unenchant());
+            ue.setExecutor(new Unenchant(this));
     }
     
     public String format(String msg)

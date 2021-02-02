@@ -16,6 +16,7 @@ public class ConfigManager
     private final EnhancedEnchant plugin;
     private FileConfiguration dataConfig = null;
     private File dataConfigFile = null;
+    
     String configFile = "config.yml";
     
     public ConfigManager(EnhancedEnchant plugin)

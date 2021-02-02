@@ -7,8 +7,10 @@ depend:
   - mcMMO
 commands:
   enhancedenchant:
+    permission: enhancedenchant.command.enchant
     description: Enchant command.
     aliases: [ee, ae]
   unenchant:
+    permission: enhancedenchant.command.unenchant
     description: Unenchant command.
     aliases: [unench, unen, ue]

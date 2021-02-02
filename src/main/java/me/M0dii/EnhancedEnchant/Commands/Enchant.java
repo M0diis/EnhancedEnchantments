@@ -1,6 +1,7 @@
 package me.M0dii.EnhancedEnchant.Commands;
 
-import me.M0dii.EnhancedEnchant.Utils.Data.DataManager;
+import me.M0dii.EnhancedEnchant.EnhancedEnchant;
+import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
 import me.M0dii.EnhancedEnchant.Utils.Enchanter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,28 +17,37 @@ import java.util.List;
 
 public class Enchant implements CommandExecutor, TabCompleter
 {
+    private final EnhancedEnchant plugin;
+    private final ConfigManager cfg;
+    
+    
+    public Enchant(EnhancedEnchant plugin)
+    {
+        this.plugin = plugin;
+        
+        this.cfg = plugin.getCfg();
+    }
+    
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd,
                              @Nonnull String label, @Nonnull String[] args)
     {
-        DataManager data = DataManager.getInstance();
-        
-        if(!sender.hasPermission("ee.use"))
+        if(!sender.hasPermission("enhancedenchant.command.enchant"))
         {
-            sender.sendMessage(data.format(data.getConfig().getString("messages.no-permission")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.no-permission")));
             
             return true;
         }
         
         if(args.length == 0)
         {
-            sender.sendMessage(data.format(data.getConfig().getString("messages.usage")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.usage")));
             
             return true;
         }
         
         if(!(sender instanceof Player))
         {
-            sender.sendMessage(data.format(data.getConfig().getString("messages.usage")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.usage")));
     
             return true;
         }
@@ -78,7 +88,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
-            sender.sendMessage(data.format(data.getConfig().getString("messages.enchantment-list")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.enchantment-list")));
             
             return true;
         }
@@ -93,7 +103,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 
                 if(target == null)
                 {
-                    sender.sendMessage(data.format(data.getConfig().getString("messages.player-not-found")));
+                    sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.player-not-found")));
                     
                     return true;
                 }
@@ -118,7 +128,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 
                 if(target == null)
                 {
-                    sender.sendMessage(data.format(data.getConfig().getString("messages.player-not-found")));
+                    sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.player-not-found")));
                     
                     return true;
                 }
@@ -135,7 +145,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
-            sender.sendMessage(data.format(data.getConfig().getString("messages.enchantment-list")));
+            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.enchantment-list")));
             
             return true;
         }
