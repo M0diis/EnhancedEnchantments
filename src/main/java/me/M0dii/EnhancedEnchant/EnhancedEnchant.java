@@ -12,6 +12,8 @@ import me.M0dii.EnhancedEnchant.Listeners.Custom.CustomCombine;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTelepathy;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTill;
 import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
@@ -21,7 +23,12 @@ public class EnhancedEnchant extends JavaPlugin
 {
     private PluginManager pm;
     private ConfigManager cfg;
+    private CoreProtectAPI coAPI;
     
+    public CoreProtectAPI getCoAPI()
+    {
+        return this.coAPI;
+    }
     public ConfigManager getCfg()
     {
         return this.cfg;
@@ -34,6 +41,8 @@ public class EnhancedEnchant extends JavaPlugin
         this.cfg = new ConfigManager(this);
         
         this.pm = this.getServer().getPluginManager();
+        
+        this.coAPI = new CoreProtectAPI();
         
         this.getLogger().info("EnhancedEnchantments has been enabled.");
         
@@ -50,7 +59,7 @@ public class EnhancedEnchant extends JavaPlugin
     {
         this.pm.registerEvents(new PlayerInteract(this), this);
         this.pm.registerEvents(new OnTelepathy(), this);
-        this.pm.registerEvents(new BlockBreak(), this);
+        this.pm.registerEvents(new BlockBreak(this), this);
         this.pm.registerEvents(new EnchantmentCombine(), this);
         this.pm.registerEvents(new CustomCombine(this), this);
         this.pm.registerEvents(new TillInteract(this), this);

@@ -4,6 +4,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.random.RandomChanceUtil;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import me.M0dii.EnhancedEnchant.Enchants.CustomEnchants;
+import me.M0dii.EnhancedEnchant.EnhancedEnchant;
 import me.M0dii.EnhancedEnchant.Events.TelepathyEvent;
 
 import java.util.Arrays;
@@ -30,6 +31,13 @@ public class BlockBreak implements Listener
     private final List<String> hoes = Arrays.asList(
             "NETHERITE_HOE", "DIAMOND_HOE", "IRON_HOE",
             "GOLDEN_HOE", "STONE_HOE", "WOODEN_HOE");
+    
+    private EnhancedEnchant plugin;
+    
+    public BlockBreak(EnhancedEnchant plugin)
+    {
+        this.plugin = plugin;
+    }
     
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent e)
@@ -62,6 +70,8 @@ public class BlockBreak implements Listener
             return;
         
         Collection<ItemStack> drops = b.getDrops(hand);
+        
+        this.plugin.getCoAPI().logRemoval(p.getName(), b.getLocation(), b.getType(), b.getBlockData());
     
         if(hoes.contains(hand.getType().toString()))
         {
@@ -74,8 +84,8 @@ public class BlockBreak implements Listener
             if(success)
             {
                 e.setDropItems(false);
-        
-                for(ItemStack drop : e.getBlock().getDrops())
+                
+                for(ItemStack drop : drops)
                 {
                     p.getInventory().addItem(drop);
                 }
