@@ -22,6 +22,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class BlockBreak implements Listener
 {
     private final List<String> HEADS = Arrays.asList("PLAYER_HEAD", "SKELETON_SKULL", "CREEPER_HEAD", "WITHER_SKELETON_SKULL",
@@ -45,6 +47,7 @@ public class BlockBreak implements Listener
         if(e.isCancelled())
             return;
         
+
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         
         if(hand == null)
@@ -78,28 +81,14 @@ public class BlockBreak implements Listener
             boolean success = RandomChanceUtil.isActivationSuccessful(
                     SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
                     SubSkillType.HERBALISM_GREEN_THUMB, p);
-    
-            boolean doubleDrops = RandomChanceUtil.isActivationSuccessful(
-                    SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
-                    SubSkillType.HERBALISM_DOUBLE_DROPS, p);
-    
-            if(doubleDrops)
-            {
-                for(ItemStack drop : drops)
-                {
-                    p.getInventory().addItem(drop);
-                }
-            }
-    
+            
             if(success)
             {
                 e.setDropItems(false);
                 
                 for(ItemStack drop : drops)
-                {
                     p.getInventory().addItem(drop);
-                }
-        
+                
                 return;
             }
         }

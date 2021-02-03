@@ -1,24 +1,20 @@
 package me.M0dii.EnhancedEnchant.Listeners.Custom;
 
-import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.util.random.RandomChanceUtil;
-import com.gmail.nossr50.util.skills.SkillActivationType;
 import me.M0dii.EnhancedEnchant.Events.TelepathyEvent;
-
-import java.util.Collection;
-import java.util.Random;
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Collection;
+import java.util.Random;
 
 public class OnTelepathy implements Listener
 {
@@ -36,18 +32,22 @@ public class OnTelepathy implements Listener
         Collection<ItemStack> drops = block.getDrops(hand);
     
         boolean silk = hand.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH);
-    
+        
         e.breakEvent().setDropItems(false);
+        
+        boolean fits = doesFit(inv, drops);
     
-        boolean doubleDrops = RandomChanceUtil.isActivationSuccessful(
-                SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
-                SubSkillType.MINING_DOUBLE_DROPS, player);
+        if(!fits)
+        {
+            for(ItemStack i : drops)
+                block.getWorld().dropItemNaturally(
+                        block.getLocation(), i);
+            
+            return;
+        }
         
         if(silk)
         {
-            if(doubleDrops)
-                inv.addItem(new ItemStack(block.getType()));
-            
             inv.addItem(new ItemStack(block.getType()));
         }
         else if(inv.firstEmpty() == -1)
@@ -56,9 +56,6 @@ public class OnTelepathy implements Listener
             
             if(inv.contains(item))
             {
-                if(doubleDrops)
-                    addToStack(player, drops);
-                
                 addToStack(player, drops);
             }
         }
@@ -66,10 +63,6 @@ public class OnTelepathy implements Listener
         {
             for(ItemStack i : drops)
                 inv.addItem(i);
-    
-            if(doubleDrops)
-                for(ItemStack i : drops)
-                    inv.addItem(i);
     
             if(hand.getType().getMaxDurability() <= itemDam.getDamage())
             {
@@ -83,6 +76,16 @@ public class OnTelepathy implements Listener
     
         applyDurability(hand, itemDam);
     }
+    
+    public boolean doesFit(Inventory inv, Collection<ItemStack> drops)
+    {
+        for (ItemStack i : inv.getStorageContents())
+            if(i == null)
+                return true;
+    
+        return hasSpaceForItem(drops, inv);
+    }
+    
     private void applyDurability(ItemStack hand, Damageable itemDam)
     {
         boolean contains = hand.getItemMeta().getEnchants().containsKey(Enchantment.DURABILITY);
@@ -123,5 +126,23 @@ public class OnTelepathy implements Listener
                 break;
             }
         }
+    }
+    
+    private boolean hasSpaceForItem(Collection<ItemStack> drops, Inventory inv)
+    {
+        ItemStack item = drops.iterator().next();
+        ItemStack[] arrayOfItemStack;
+    
+        int j = (arrayOfItemStack = inv.getStorageContents()).length;
+    
+        for(int i = 0; i < j; i++)
+        {
+            ItemStack it = arrayOfItemStack[i];
+        
+            if((it.equals(item)) && (it.getAmount() < 64))
+                return true;
+        }
+        
+        return false;
     }
 }

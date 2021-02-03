@@ -14,10 +14,10 @@ public class EnchantmentCombine implements Listener
 {
     @EventHandler
     public void onCombine(final InventoryClickEvent e) {
-        if (!e.getCursor().hasItemMeta())
+        if (e.getCursor() != null && !e.getCursor().hasItemMeta())
             return;
         
-        if (!e.getCursor().getType().equals((Object)Material.ENCHANTED_BOOK))
+        if (!e.getCursor().getType().equals(Material.ENCHANTED_BOOK))
             return;
         
         if (!e.getCursor().getItemMeta().hasEnchants())
