@@ -77,9 +77,19 @@ public class BlockBreak implements Listener
         {
             boolean success = RandomChanceUtil.isActivationSuccessful(
                     SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
-                    SubSkillType.HERBALISM_GREEN_THUMB,
-                    e.getPlayer()
-            );
+                    SubSkillType.HERBALISM_GREEN_THUMB, p);
+    
+            boolean doubleDrops = RandomChanceUtil.isActivationSuccessful(
+                    SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
+                    SubSkillType.HERBALISM_DOUBLE_DROPS, p);
+    
+            if(doubleDrops)
+            {
+                for(ItemStack drop : drops)
+                {
+                    p.getInventory().addItem(drop);
+                }
+            }
     
             if(success)
             {

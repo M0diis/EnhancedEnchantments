@@ -1,5 +1,8 @@
 package me.M0dii.EnhancedEnchant.Listeners.Custom;
 
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.random.RandomChanceUtil;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import me.M0dii.EnhancedEnchant.Events.TelepathyEvent;
 
 import java.util.Collection;
@@ -35,45 +38,48 @@ public class OnTelepathy implements Listener
         boolean silk = hand.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH);
     
         e.breakEvent().setDropItems(false);
+    
+        boolean doubleDrops = RandomChanceUtil.isActivationSuccessful(
+                SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP,
+                SubSkillType.MINING_DOUBLE_DROPS, player);
         
         if(silk)
         {
+            if(doubleDrops)
+                inv.addItem(new ItemStack(block.getType()));
+            
             inv.addItem(new ItemStack(block.getType()));
-        
-            block.setType(Material.AIR);
-    
-            applyDurability(hand, itemDam);
-        
-            return;
         }
-        
-        if(inv.firstEmpty() == -1)
+        else if(inv.firstEmpty() == -1)
         {
             ItemStack item = drops.iterator().next();
             
             if(inv.contains(item))
             {
+                if(doubleDrops)
+                    addToStack(player, drops);
+                
                 addToStack(player, drops);
-                
-                block.setType(Material.AIR);
+            }
+        }
+        else
+        {
+            for(ItemStack i : drops)
+                inv.addItem(i);
     
-                applyDurability(hand, itemDam);
-                
+            if(doubleDrops)
+                for(ItemStack i : drops)
+                    inv.addItem(i);
+    
+            if(hand.getType().getMaxDurability() <= itemDam.getDamage())
+            {
+                inv.removeItem(hand);
+        
                 return;
             }
         }
-        
-        for(ItemStack i : drops)
-            inv.addItem(i);
-        
+    
         block.setType(Material.AIR);
-        
-        if(hand.getType().getMaxDurability() <= itemDam.getDamage())
-        {
-            inv.removeItem(hand);
-            
-            return;
-        }
     
         applyDurability(hand, itemDam);
     }

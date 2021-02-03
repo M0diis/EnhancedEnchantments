@@ -12,33 +12,39 @@ import me.M0dii.EnhancedEnchant.Listeners.Custom.CustomCombine;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTelepathy;
 import me.M0dii.EnhancedEnchant.Listeners.Custom.OnTill;
 import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
-import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EnhancedEnchant extends JavaPlugin
 {
     private PluginManager pm;
-    private ConfigManager cfg;
+    private ConfigManager configManager;
     private CoreProtectAPI coAPI;
     
     public CoreProtectAPI getCoAPI()
     {
         return this.coAPI;
     }
-    public ConfigManager getCfg()
+    
+    public ConfigManager getConfigManager()
     {
-        return this.cfg;
+        return this.configManager;
+    }
+    
+    public FileConfiguration getCfg()
+    {
+        return this.configManager.getConfig();
     }
     
     public void onEnable()
     {
         RegisterEnchants.register();
         
-        this.cfg = new ConfigManager(this);
+        this.configManager = new ConfigManager(this);
         
         this.pm = this.getServer().getPluginManager();
         

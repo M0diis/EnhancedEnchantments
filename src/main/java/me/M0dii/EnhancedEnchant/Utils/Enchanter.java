@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -16,8 +17,8 @@ public class Enchanter
     public static ItemStack getBook(String type)
     {
         EnhancedEnchant plugin = EnhancedEnchant.getPlugin(EnhancedEnchant.class);
-        
-        ConfigManager cfg = plugin.getCfg();
+
+        FileConfiguration cfg = plugin.getCfg();
         
         ItemStack item = new ItemStack(Material.ENCHANTED_BOOK);
         
@@ -25,11 +26,11 @@ public class Enchanter
         
         ItemMeta meta = item.getItemMeta();
         
-        meta.setDisplayName(plugin.format(cfg.getConfig().getString("enchants." + type.toLowerCase() + ".displayname")));
+        meta.setDisplayName(plugin.format(cfg.getString("enchants." + type.toLowerCase() + ".displayname")));
         
         List<String> lore = new ArrayList<>();
         
-        for(String l : cfg.getConfig().getStringList("enchants." + type.toLowerCase() + ".lore"))
+        for(String l : cfg.getStringList("enchants." + type.toLowerCase() + ".lore"))
         {
             lore.add(plugin.format(l));
         }

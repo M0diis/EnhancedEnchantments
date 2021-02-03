@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +21,7 @@ import javax.annotation.Nonnull;
 public class Unenchant implements CommandExecutor
 {
     private final EnhancedEnchant plugin;
-    private final ConfigManager cfg;
+    private final FileConfiguration cfg;
     
     public Unenchant(EnhancedEnchant plugin)
     {
@@ -41,7 +42,7 @@ public class Unenchant implements CommandExecutor
         
         if(!player.hasPermission("enhancedenchant.command.unenchant"))
         {
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.no-permission")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.no-permission")));
             
             return true;
         }
@@ -82,13 +83,16 @@ public class Unenchant implements CommandExecutor
             }
             
             hand.setItemMeta(meta);
-            
-            sender.sendMessage(ChatColor.RED + "Telepathy enchant removed!");
+    
+            sender.sendMessage(this.format(this.cfg.getString("messages.enchant-removed")
+                    .replace("%enchant_name%", "Plow")));
         }
         
         if(hand.getItemMeta().hasEnchant(CustomEnchants.PLOW))
         {
-            hand.removeEnchantment(CustomEnchants.PLOW); ItemMeta meta = hand.getItemMeta();
+            hand.removeEnchantment(CustomEnchants.PLOW);
+            
+            ItemMeta meta = hand.getItemMeta();
             
             List<String> lore = new ArrayList<>();
             
@@ -105,9 +109,16 @@ public class Unenchant implements CommandExecutor
             
             hand.setItemMeta(meta);
             
-            sender.sendMessage(ChatColor.RED + "Plow enchant removed!");
+            
+            sender.sendMessage(this.format(this.cfg.getString("messages.enchant-removed")
+                    .replace("%enchant_name%", "Plow")));
         }
         
         return true;
+    }
+    
+    public String format(String msg)
+    {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

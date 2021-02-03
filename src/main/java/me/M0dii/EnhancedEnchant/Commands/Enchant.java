@@ -4,10 +4,12 @@ import me.M0dii.EnhancedEnchant.EnhancedEnchant;
 import me.M0dii.EnhancedEnchant.Utils.Data.ConfigManager;
 import me.M0dii.EnhancedEnchant.Utils.Enchanter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,8 +20,7 @@ import java.util.List;
 public class Enchant implements CommandExecutor, TabCompleter
 {
     private final EnhancedEnchant plugin;
-    private final ConfigManager cfg;
-    
+    private final FileConfiguration cfg;
     
     public Enchant(EnhancedEnchant plugin)
     {
@@ -33,21 +34,21 @@ public class Enchant implements CommandExecutor, TabCompleter
     {
         if(!sender.hasPermission("enhancedenchant.command.enchant"))
         {
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.no-permission")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.no-permission")));
             
             return true;
         }
         
         if(args.length == 0)
         {
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.usage")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.usage")));
             
             return true;
         }
         
         if(!(sender instanceof Player))
         {
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.usage")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.usage")));
     
             return true;
         }
@@ -88,7 +89,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.enchantment-list")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
         }
@@ -103,7 +104,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 
                 if(target == null)
                 {
-                    sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.player-not-found")));
+                    sender.sendMessage(this.format(this.cfg.getString("messages.player-not-found")));
                     
                     return true;
                 }
@@ -128,7 +129,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 
                 if(target == null)
                 {
-                    sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.player-not-found")));
+                    sender.sendMessage(this.format(this.cfg.getString("messages.player-not-found")));
                     
                     return true;
                 }
@@ -145,7 +146,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
-            sender.sendMessage(this.plugin.format(this.cfg.getConfig().getString("messages.enchantment-list")));
+            sender.sendMessage(this.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
         }
@@ -174,5 +175,10 @@ public class Enchant implements CommandExecutor, TabCompleter
         }
         
         return completes;
+    }
+    
+    public String format(String msg)
+    {
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

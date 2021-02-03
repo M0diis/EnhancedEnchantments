@@ -33,3 +33,4 @@ messages:
   player-not-found: "&c&lPlayer not found."
   enchantment-list: "&9&lCurrent Enchants:\n&3&lTelepathy, Plow"
   usage: "&c&lCommand usage: &d/&7ee <enchantment> <player>"
+  enchant-removed: "&4%enchant_name% enchant has been removed"
