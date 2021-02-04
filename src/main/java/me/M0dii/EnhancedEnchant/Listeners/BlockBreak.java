@@ -65,7 +65,8 @@ public class BlockBreak implements Listener
         
         Player p = e.getPlayer();
         Block b = e.getBlock();
-        
+        e.setDropItems(false);
+    
         if(this.HEADS.contains(b.getType().toString()))
             return;
         
@@ -79,8 +80,6 @@ public class BlockBreak implements Listener
             
             if(success)
             {
-                e.setDropItems(false);
-                
                 for(ItemStack drop : drops)
                     p.getInventory().addItem(drop);
                 
@@ -90,7 +89,8 @@ public class BlockBreak implements Listener
         
         if(drops.isEmpty())
             return;
-    
+        
+        
         Bukkit.getPluginManager().callEvent(new TelepathyEvent(p, e));
     }
 }

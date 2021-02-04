@@ -3,9 +3,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-
 group 'me.M0dii'
-version '1.3'
+version '1.4'
 sourceCompatibility = '8'
 
 repositories {
@@ -30,6 +29,7 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
     compileOnly name: 'mcMMO'
     compileOnly name: 'CoreProtect-19.4'
+    compileOnly name: 'Jobs4.16.3'
 }
 
 compileJava.options.encoding = 'UTF-8'

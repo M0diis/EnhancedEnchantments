@@ -27,7 +27,7 @@ public class OnTelepathy implements Listener
     public void onTelepathy(TelepathyEvent e)
     {
         Player player = e.getPlayer();
-        Block block = e.breakEvent().getBlock();
+        Block block = e.getBlock();
         PlayerInventory inv = player.getInventory();
         ItemStack hand = inv.getItemInMainHand();
         Damageable itemDam = (Damageable)hand.getItemMeta();
@@ -35,11 +35,6 @@ public class OnTelepathy implements Listener
         Collection<ItemStack> drops = block.getDrops(hand);
     
         boolean silk = hand.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH);
-        
-        e.breakEvent().setDropItems(false);
-    
-        this.plugin.getCoAPI().logRemoval(player.getName(), block.getLocation(),
-                block.getType(), block.getBlockData());
     
         boolean fits = doesFit(inv, drops);
     
@@ -79,8 +74,6 @@ public class OnTelepathy implements Listener
                 return;
             }
         }
-        
-        block.setType(Material.AIR);
     
         applyDurability(hand, itemDam);
     }

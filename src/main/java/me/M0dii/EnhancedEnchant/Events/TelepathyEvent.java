@@ -1,5 +1,6 @@
 package me.M0dii.EnhancedEnchant.Events;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -11,11 +12,18 @@ public class TelepathyEvent extends Event implements Cancellable
     private final Player player;
     private boolean isCancelled;
     private final BlockBreakEvent event;
+    private final Block block;
     
     public TelepathyEvent(Player p, BlockBreakEvent e)
     {
         this.player = p;
         this.event = e;
+        this.block = e.getBlock();
+    }
+    
+    public Block getBlock()
+    {
+        return this.block;
     }
     
     public boolean isCancelled()
