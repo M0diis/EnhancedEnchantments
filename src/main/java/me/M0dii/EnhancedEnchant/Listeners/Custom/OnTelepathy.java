@@ -4,6 +4,7 @@ import me.M0dii.EnhancedEnchant.EnhancedEnchant;
 import me.M0dii.EnhancedEnchant.Events.TelepathyEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ public class OnTelepathy implements Listener
         Damageable itemDam = (Damageable)hand.getItemMeta();
         
         Collection<ItemStack> drops = block.getDrops(hand);
-    
+        
         boolean silk = hand.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH);
     
         boolean fits = doesFit(inv, drops);
@@ -48,8 +49,13 @@ public class OnTelepathy implements Listener
             
             return;
         }
-        
-        if(silk)
+    
+        if(block.getBlockData() instanceof Bed)
+        {
+            if(((Bed)block.getBlockData()).getPart().equals(Bed.Part.FOOT))
+                inv.addItem(new ItemStack(block.getType()));
+        }
+        else if(silk)
         {
             inv.addItem(new ItemStack(block.getType()));
         }
@@ -58,9 +64,7 @@ public class OnTelepathy implements Listener
             ItemStack item = drops.iterator().next();
             
             if(inv.contains(item))
-            {
                 addToStack(player, drops);
-            }
         }
         else
         {
@@ -132,14 +136,9 @@ public class OnTelepathy implements Listener
     private boolean hasSpaceForItem(Collection<ItemStack> drops, Inventory inv)
     {
         ItemStack item = drops.iterator().next();
-        ItemStack[] itemstArray = inv.getStorageContents();
-    
-        int j = itemstArray.length;
-    
-        for(int i = 0; i < j; i++)
-        {
-            ItemStack it = itemstArray[i];
         
+        for(ItemStack it : inv.getStorageContents())
+        {
             if((it.equals(item)) && (it.getAmount() < 64))
                 return true;
         }
