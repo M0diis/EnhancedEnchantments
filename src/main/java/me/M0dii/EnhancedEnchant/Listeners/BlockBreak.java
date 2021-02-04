@@ -22,8 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
-
 public class BlockBreak implements Listener
 {
     private final List<String> HEADS = Arrays.asList("PLAYER_HEAD", "SKELETON_SKULL", "CREEPER_HEAD", "WITHER_SKELETON_SKULL",
@@ -34,7 +32,7 @@ public class BlockBreak implements Listener
             "NETHERITE_HOE", "DIAMOND_HOE", "IRON_HOE",
             "GOLDEN_HOE", "STONE_HOE", "WOODEN_HOE");
     
-    private EnhancedEnchant plugin;
+    private final EnhancedEnchant plugin;
     
     public BlockBreak(EnhancedEnchant plugin)
     {
@@ -47,7 +45,6 @@ public class BlockBreak implements Listener
         if(e.isCancelled())
             return;
         
-
         ItemStack hand = e.getPlayer().getInventory().getItemInMainHand();
         
         if(hand == null)
@@ -74,8 +71,6 @@ public class BlockBreak implements Listener
         
         Collection<ItemStack> drops = b.getDrops(hand);
         
-        this.plugin.getCoAPI().logRemoval(p.getName(), b.getLocation(), b.getType(), b.getBlockData());
-    
         if(hoes.contains(hand.getType().toString()))
         {
             boolean success = RandomChanceUtil.isActivationSuccessful(

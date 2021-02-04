@@ -1,5 +1,6 @@
 package me.M0dii.EnhancedEnchant.Listeners.Custom;
 
+import me.M0dii.EnhancedEnchant.EnhancedEnchant;
 import me.M0dii.EnhancedEnchant.Events.TelepathyEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,6 +21,8 @@ public class OnTelepathy implements Listener
 {
     private final Random r = new Random();
     
+    private final EnhancedEnchant plugin = EnhancedEnchant.getPlugin(EnhancedEnchant.class);
+    
     @EventHandler
     public void onTelepathy(TelepathyEvent e)
     {
@@ -34,7 +37,10 @@ public class OnTelepathy implements Listener
         boolean silk = hand.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH);
         
         e.breakEvent().setDropItems(false);
-        
+    
+        this.plugin.getCoAPI().logRemoval(player.getName(), block.getLocation(),
+                block.getType(), block.getBlockData());
+    
         boolean fits = doesFit(inv, drops);
     
         if(!fits)
@@ -42,6 +48,8 @@ public class OnTelepathy implements Listener
             for(ItemStack i : drops)
                 block.getWorld().dropItemNaturally(
                         block.getLocation(), i);
+    
+            applyDurability(hand, itemDam);
             
             return;
         }
@@ -71,7 +79,7 @@ public class OnTelepathy implements Listener
                 return;
             }
         }
-    
+        
         block.setType(Material.AIR);
     
         applyDurability(hand, itemDam);
@@ -131,13 +139,13 @@ public class OnTelepathy implements Listener
     private boolean hasSpaceForItem(Collection<ItemStack> drops, Inventory inv)
     {
         ItemStack item = drops.iterator().next();
-        ItemStack[] arrayOfItemStack;
+        ItemStack[] itemstArray = inv.getStorageContents();
     
-        int j = (arrayOfItemStack = inv.getStorageContents()).length;
+        int j = itemstArray.length;
     
         for(int i = 0; i < j; i++)
         {
-            ItemStack it = arrayOfItemStack[i];
+            ItemStack it = itemstArray[i];
         
             if((it.equals(item)) && (it.getAmount() < 64))
                 return true;
