@@ -49,13 +49,8 @@ public class OnTelepathy implements Listener
             
             return;
         }
-    
-        if(block.getBlockData() instanceof Bed)
-        {
-            if(((Bed)block.getBlockData()).getPart().equals(Bed.Part.FOOT))
-                inv.addItem(new ItemStack(block.getType()));
-        }
-        else if(silk)
+        
+        if(silk)
         {
             inv.addItem(new ItemStack(block.getType()));
         }

@@ -86,6 +86,13 @@ public class BlockBreak implements Listener
                 return;
             }
         }
+    
+        if(b.getType().name().contains("BED"))
+        {
+            p.getInventory().addItem(new ItemStack(b.getType()));
+            
+            return;
+        }
         
         if(drops.isEmpty())
             return;

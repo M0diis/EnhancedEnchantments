@@ -46,17 +46,17 @@ public class Enchant implements CommandExecutor, TabCompleter
             return true;
         }
         
-        if(!(sender instanceof Player))
-        {
-            sender.sendMessage(this.format(this.cfg.getString("messages.usage")));
-    
-            return true;
-        }
-        
-        Player player = (Player)sender;
-        
         if(args.length == 1)
         {
+            if(!(sender instanceof Player))
+            {
+                sender.sendMessage(this.format(this.cfg.getString("messages.usage")));
+        
+                return true;
+            }
+    
+            Player player = (Player)sender;
+            
             if(args[0].equalsIgnoreCase("telepathy"))
             {
                 ItemStack item = Enchanter.getBook("TELEPATHY");
