@@ -16,7 +16,6 @@ public class CustomEnchants
     public static final Enchantment BONDED =
             new EnchantmentWrapper("bonded", "Bonded", 1);
     
-    
     public static Enchantment parse(String name)
     {
         if(name.equalsIgnoreCase("telepathy"))
