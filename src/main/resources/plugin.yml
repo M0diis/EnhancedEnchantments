@@ -1,0 +1,14 @@
+main: me.m0dii.enhancedenchant.EnhancedEnchant
+name: EnhancedEnchantments
+author: M0dii
+version: ${version}
+api-version: 1.16
+commands:
+  enhancedenchant:
+    permission: enhancedenchant.command.enchant
+    description: Enchant command.
+    aliases: [ee, ae]
+  unenchant:
+    permission: enhancedenchant.command.unenchant
+    description: Unenchant command.
+    aliases: [unench, unen, ue]
