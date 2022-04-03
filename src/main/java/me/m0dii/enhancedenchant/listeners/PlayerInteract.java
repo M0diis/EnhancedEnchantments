@@ -2,6 +2,7 @@ package me.m0dii.enhancedenchant.listeners;
 
 import me.m0dii.enhancedenchant.EnhancedEnchant;
 import me.m0dii.enhancedenchant.enchants.CustomEnchants;
+import me.m0dii.enhancedenchant.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,9 +42,9 @@ public class PlayerInteract implements Listener
         && (!e.getItem().getItemMeta().hasEnchant(CustomEnchants.PLOW)))
             return;
         
-        e.getPlayer().sendMessage(this.plugin.format(e.getItem().getItemMeta().getDisplayName()));
+        e.getPlayer().sendMessage(Utils.format(e.getItem().getItemMeta().getDisplayName()));
         
         for(String l : e.getItem().getItemMeta().getLore())
-            e.getPlayer().sendMessage(this.plugin.format(l));
+            e.getPlayer().sendMessage(Utils.format(l));
     }
 }

@@ -1,8 +1,8 @@
 package me.m0dii.enhancedenchant.commands;
 
-import me.m0dii.enhancedenchant.enchants.CustomEnchants;
 import me.m0dii.enhancedenchant.EnhancedEnchant;
-import me.m0dii.enhancedenchant.Utils.Enchanter;
+import me.m0dii.enhancedenchant.enchants.CustomEnchants;
+import me.m0dii.enhancedenchant.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,13 +21,10 @@ import java.util.List;
 
 public class Enchant implements CommandExecutor, TabCompleter
 {
-    private final EnhancedEnchant plugin;
     private final FileConfiguration cfg;
     
     public Enchant(EnhancedEnchant plugin)
     {
-        this.plugin = plugin;
-        
         this.cfg = plugin.getCfg();
     }
     
@@ -36,36 +33,34 @@ public class Enchant implements CommandExecutor, TabCompleter
     {
         if(!sender.hasPermission("enhancedenchant.command.enchant"))
         {
-            sender.sendMessage(format(this.cfg.getString("messages.no-permission")));
+            sender.sendMessage(Utils.format(this.cfg.getString("messages.no-permission")));
             
             return true;
         }
         
         if(args.length == 0)
         {
-            sender.sendMessage(format(this.cfg.getString("messages.usage")));
+            sender.sendMessage(Utils.format(this.cfg.getString("messages.usage")));
             
             return true;
         }
     
         if(args.length == 2 && args[0].equalsIgnoreCase("apply"))
         {
-            if(!(sender instanceof Player))
+            if(!(sender instanceof Player player))
             {
-                sender.sendMessage(format(this.cfg.getString("messages.usage")));
+                sender.sendMessage(Utils.format(this.cfg.getString("messages.usage")));
     
                 return true;
             }
     
-            Player player = (Player)sender;
-            
             Enchantment ench = CustomEnchants.parse(args[1]);
             
             ItemStack curr = player.getInventory().getItemInMainHand();
             
             if((curr.hasItemMeta()) && (curr.getItemMeta().hasEnchant(ench)))
             {
-                player.sendMessage(format("&7Item already has the enchant."));
+                player.sendMessage(Utils.format("&7Item already has the enchant."));
                 
                 return true;
             }
@@ -79,15 +74,13 @@ public class Enchant implements CommandExecutor, TabCompleter
         
         if(args.length == 2 && args[0].equalsIgnoreCase("give"))
         {
-            if(!(sender instanceof Player))
+            if(!(sender instanceof Player player))
             {
-                sender.sendMessage(format(this.cfg.getString("messages.usage")));
+                sender.sendMessage(Utils.format(this.cfg.getString("messages.usage")));
         
                 return true;
             }
     
-            Player player = (Player)sender;
-            
             if(args[1].equalsIgnoreCase("telepathy"))
                 giveBook(player, "TELEPATHY", 1);
             
@@ -100,7 +93,7 @@ public class Enchant implements CommandExecutor, TabCompleter
             if(args[1].equalsIgnoreCase("bonded"))
                 giveBook(player, "BONDED", 1);
             
-            sender.sendMessage(format(this.cfg.getString("messages.enchantment-list")));
+            sender.sendMessage(Utils.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
         }
@@ -115,17 +108,14 @@ public class Enchant implements CommandExecutor, TabCompleter
                 {
                     amount = Integer.parseInt(args[3]);
                 }
-                catch(NumberFormatException ex)
-                {
-                    //
-                }
+                catch(NumberFormatException ignore) { }
             }
     
             Player target = Bukkit.getPlayer(args[2]);
     
             if(target == null)
             {
-                sender.sendMessage(format(this.cfg.getString("messages.player-not-found")));
+                sender.sendMessage(Utils.format(this.cfg.getString("messages.player-not-found")));
         
                 return true;
             }
@@ -158,7 +148,7 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
-            sender.sendMessage(format(this.cfg.getString("messages.enchantment-list")));
+            sender.sendMessage(Utils.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
         }
@@ -168,7 +158,7 @@ public class Enchant implements CommandExecutor, TabCompleter
     
     private void giveBook(Player p, String name, int amount)
     {
-        ItemStack item = Enchanter.getBook(name);
+        ItemStack item = Utils.getBook(name);
     
         for(int i = 0; i < amount; i++)
         {
@@ -216,7 +206,7 @@ public class Enchant implements CommandExecutor, TabCompleter
         if(meta.getLore() != null)
         {
             for(String l : meta.getLore())
-                lore.add(this.plugin.format(l));
+                lore.add(Utils.format(l));
         }
         
         meta.setLore(lore);
@@ -225,10 +215,5 @@ public class Enchant implements CommandExecutor, TabCompleter
         
         if(curr.getAmount() > 1)
             curr.setAmount(curr.getAmount() - 1);
-    }
-    
-    public String format(String msg)
-    {
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

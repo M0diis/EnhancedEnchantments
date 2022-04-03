@@ -6,6 +6,8 @@ import me.m0dii.enhancedenchant.events.CombineEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import me.m0dii.enhancedenchant.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -136,7 +138,6 @@ public class CustomCombine implements Listener
         {
             return true;
         }
-        
     
         ItemMeta meta = item.getItemMeta();
         
@@ -160,7 +161,7 @@ public class CustomCombine implements Listener
         if(meta.getLore() != null)
         {
             for(String l : meta.getLore())
-                lore.add(this.plugin.format(l));
+                lore.add(Utils.format(l));
         }
         
         meta.setLore(lore);
