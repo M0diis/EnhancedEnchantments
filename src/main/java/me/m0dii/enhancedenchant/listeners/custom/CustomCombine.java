@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,6 +52,9 @@ public class CustomCombine implements Listener
         if(ench.equalsIgnoreCase("bonded"))
         {
             if(ignore(curr, CustomEnchants.BONDED))
+                return;
+            
+            if(curr.getType().equals(Material.ENCHANTED_BOOK))
                 return;
             
             event.clickEvent().setCancelled(true);
