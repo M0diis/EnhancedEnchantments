@@ -78,8 +78,6 @@ public class BlockBreak implements Listener
         if(drops.isEmpty())
             return;
         
-        
-        
         Bukkit.getPluginManager().callEvent(new TelepathyEvent(p, e));
     }
 }

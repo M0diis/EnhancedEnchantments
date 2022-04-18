@@ -4,7 +4,7 @@ import me.m0dii.enhancedenchant.listeners.*;
 import me.m0dii.enhancedenchant.listeners.custom.OnLavaWalk;
 import me.m0dii.enhancedenchant.listeners.custom.OnTelepathy;
 import me.m0dii.enhancedenchant.listeners.custom.OnTill;
-import me.m0dii.enhancedenchant.Utils.Data.ConfigManager;
+import me.m0dii.enhancedenchant.utils.Data.ConfigManager;
 import me.m0dii.enhancedenchant.commands.Enchant;
 import me.m0dii.enhancedenchant.commands.Unenchant;
 import me.m0dii.enhancedenchant.enchants.RegisterEnchants;
@@ -58,6 +58,7 @@ public class EnhancedEnchant extends JavaPlugin
         this.pm.registerEvents(new PlayerInteract(this), this);
         this.pm.registerEvents(new OnTelepathy(this), this);
         this.pm.registerEvents(new BlockBreak(this), this);
+        this.pm.registerEvents(new BlockInterract(this), this);
         this.pm.registerEvents(new EnchantmentCombine(), this);
         this.pm.registerEvents(new CustomCombine(this), this);
         this.pm.registerEvents(new TillInteract(this), this);

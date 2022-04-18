@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -139,6 +138,6 @@ public class OnTelepathy implements Listener
                 itemDam.setDamage(itemDam.getDamage() + 1);
         }
         
-        hand.setItemMeta((ItemMeta)itemDam);
+        hand.setItemMeta(itemDam);
     }
 }

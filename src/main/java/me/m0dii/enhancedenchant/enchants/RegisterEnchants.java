@@ -14,21 +14,22 @@ public class RegisterEnchants
     {
         List<Enchantment> list = Arrays.stream(Enchantment.values()).toList();
         
-        if (!list.contains(CustomEnchants.TELEPATHY))
-            registerEnchantment(CustomEnchants.TELEPATHY);
-            
-        if (!list.contains(CustomEnchants.PLOW))
-            registerEnchantment(CustomEnchants.PLOW);
+        registerEnchantment(CustomEnchants.TELEPATHY, list);
     
-        if (!list.contains(CustomEnchants.LAVA_WALKER))
-            registerEnchantment(CustomEnchants.LAVA_WALKER);
+        registerEnchantment(CustomEnchants.PLOW, list);
     
-        if (!list.contains(CustomEnchants.BONDED))
-            registerEnchantment(CustomEnchants.BONDED);
+        registerEnchantment(CustomEnchants.LAVA_WALKER, list);
+    
+        registerEnchantment(CustomEnchants.BONDED, list);
+    
+        registerEnchantment(CustomEnchants.OXIDIZING, list);
     }
     
-    private static void registerEnchantment(final Enchantment enchantment)
+    private static void registerEnchantment(final Enchantment enchantment, List<Enchantment> list)
     {
+        if (list.contains(enchantment))
+            return;
+        
         try
         {
             final Field f = Enchantment.class.getDeclaredField("acceptingNew");

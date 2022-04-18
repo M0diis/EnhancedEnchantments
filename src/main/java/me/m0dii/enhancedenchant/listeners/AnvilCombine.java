@@ -45,6 +45,9 @@ public class AnvilCombine implements Listener
             
             if(l.contains("Lava Walker"))
                 addEnchant(result, CustomEnchants.LAVA_WALKER);
+            
+            if(l.contains("Oxidizing"))
+                addEnchant(result, CustomEnchants.OXIDIZING);
         }
     }
     

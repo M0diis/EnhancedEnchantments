@@ -1,4 +1,4 @@
-package me.m0dii.enhancedenchant.Utils.Data;
+package me.m0dii.enhancedenchant.utils.Data;
 
 import me.m0dii.enhancedenchant.EnhancedEnchant;
 

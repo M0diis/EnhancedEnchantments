@@ -16,6 +16,9 @@ public class CustomEnchants
     public static final Enchantment BONDED =
             new EnchantmentWrapper("bonded", "Bonded", 1);
     
+    public static final Enchantment OXIDIZING =
+            new EnchantmentWrapper("oxidizing", "Oxidizing", 1);
+    
     public static Enchantment parse(String name)
     {
         if(name.equalsIgnoreCase("telepathy"))
@@ -26,6 +29,9 @@ public class CustomEnchants
     
         if(name.equalsIgnoreCase("bonded"))
             return BONDED;
+        
+        if(name.equalsIgnoreCase("oxidizing"))
+            return OXIDIZING;
         
         return PLOW;
     }

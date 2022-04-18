@@ -42,9 +42,19 @@ enchants:
       - "&7Will prevent the item from being dropped."
       - ""
       - "&6Enchantable Items: &aTools & Armor"
+  oxidizing:
+    enabled: true
+    displayname: "&d&lOxidizing I"
+    lore:
+      - "&7Drag book and drop on Item."
+      - "&7Right click for more Info."
+      - ""
+      - "&7Oxidizes copper blocks."
+      - ""
+      - "&6Enchantable Items: &aTools"
 messages:
   no-permission: "&c&lYou do not have permission to do this!"
   player-not-found: "&c&lPlayer not found."
-  enchantment-list: "&9&lCurrent Enchants:\n&3&lTelepathy, Plow, Lava Walker, Bonded"
+  enchantment-list: "&9&lCurrent Enchants:\n&3&lTelepathy, Plow, Lava Walker, Bonded, Oxidizing"
   usage: "&c&lCommand usage: &d/&7ee <enchantment> <player>"
   enchant-removed: "&4%enchant_name% enchant has been removed"

@@ -93,6 +93,9 @@ public class Enchant implements CommandExecutor, TabCompleter
             if(args[1].equalsIgnoreCase("bonded"))
                 giveBook(player, "BONDED", 1);
             
+            if(args[1].equalsIgnoreCase("oxidizing"))
+                giveBook(player, "OXIDIZING", 1);
+            
             sender.sendMessage(Utils.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
@@ -148,6 +151,13 @@ public class Enchant implements CommandExecutor, TabCompleter
                 return true;
             }
             
+            if(args[1].equalsIgnoreCase("oxidizing"))
+            {
+                giveBook(target, "OXIDIZING", amount);
+        
+                return true;
+            }
+            
             sender.sendMessage(Utils.format(this.cfg.getString("messages.enchantment-list")));
             
             return true;
@@ -186,6 +196,7 @@ public class Enchant implements CommandExecutor, TabCompleter
             completes.add("telepathy");
             completes.add("lavawalker");
             completes.add("bonded");
+            completes.add("oxidizing");
         }
     
         if(args.length == 3)

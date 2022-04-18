@@ -129,6 +129,25 @@ public class CustomCombine implements Listener
                 return;
         }
         
+        if(ench.equalsIgnoreCase("oxidizing"))
+        {
+            if(!tools.contains(curr.getType().toString()))
+                return;
+    
+            if(ignore(curr, CustomEnchants.OXIDIZING))
+                return;
+            
+            event.clickEvent().setCancelled(true);
+            
+            ItemStack tool = new ItemStack(curr.getType());
+            List<String> lore = new ArrayList<>();
+            
+            lore.add(ChatColor.GRAY + "Oxidizing I");
+            
+            if(combine(event, curr, CustomEnchants.OXIDIZING, tool, lore))
+                return;
+        }
+        
         event.clickEvent().setCursor(null);
     }
     

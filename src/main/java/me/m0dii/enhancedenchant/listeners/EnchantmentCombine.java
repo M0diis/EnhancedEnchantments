@@ -20,7 +20,10 @@ public class EnchantmentCombine implements Listener
     {
         ItemStack cursor = e.getCursor();
         
-        if(cursor != null && !cursor.hasItemMeta())
+        if(cursor == null)
+            return;
+        
+        if(!cursor.hasItemMeta())
             return;
         
         if(!cursor.getType().equals(Material.ENCHANTED_BOOK))
@@ -34,7 +37,9 @@ public class EnchantmentCombine implements Listener
         if(!m.hasEnchant(CustomEnchants.TELEPATHY)
         && !m.hasEnchant(CustomEnchants.PLOW)
         && !m.hasEnchant(CustomEnchants.LAVA_WALKER)
-        && !m.hasEnchant(CustomEnchants.BONDED))
+        && !m.hasEnchant(CustomEnchants.BONDED)
+        && !m.hasEnchant(CustomEnchants.OXIDIZING)
+        )
             return;
     
         Player p = (Player)e.getWhoClicked();
@@ -51,5 +56,7 @@ public class EnchantmentCombine implements Listener
             Bukkit.getPluginManager().callEvent(new CombineEvent(p, e, "LAVA_WALKER"));
         else if (cursor.getItemMeta().hasEnchant(CustomEnchants.BONDED))
             Bukkit.getPluginManager().callEvent(new CombineEvent(p, e, "BONDED"));
+        else if (cursor.getItemMeta().hasEnchant(CustomEnchants.OXIDIZING))
+            Bukkit.getPluginManager().callEvent(new CombineEvent(p, e, "OXIDIZING"));
     }
 }

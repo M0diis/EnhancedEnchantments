@@ -30,15 +30,13 @@ public class Unenchant implements CommandExecutor
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd,
                              @Nonnull String label, @Nonnull String[] args)
     {
-        if(!(sender instanceof Player))
+        if(!(sender instanceof Player player))
         {
             sender.sendMessage(ChatColor.RED + "Console cannot perform this command");
             
             return true;
         }
-        
-        Player player = (Player)sender;
-        
+    
         if(!player.hasPermission("enhancedenchant.command.unenchant"))
         {
             sender.sendMessage(this.format(this.cfg.getString("messages.no-permission")));
@@ -75,6 +73,9 @@ public class Unenchant implements CommandExecutor
     
         if(meta.hasEnchant(CustomEnchants.BONDED))
             unenchant(sender, hand, CustomEnchants.BONDED, hand, "Bonded");
+        
+        if(meta.hasEnchant(CustomEnchants.OXIDIZING))
+            unenchant(sender, hand, CustomEnchants.OXIDIZING, hand, "Oxidizing");
         
         return true;
     }
