@@ -44,6 +44,7 @@ enchants:
       - "&6Enchantable Items: &aTools & Armor"
   oxidizing:
     enabled: true
+    durability: true
     displayname: "&d&lOxidizing I"
     lore:
       - "&7Drag book and drop on Item."

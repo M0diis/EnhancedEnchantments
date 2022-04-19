@@ -14,6 +14,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
@@ -99,41 +100,57 @@ public class BlockInterract implements Listener
         
         if(plugin.getCfg().getBoolean("enchants.oxidizing.durability"))
         {
-            // applyDurability(hand,
+            applyDurability(player, hand);
         }
     }
     
     private final Random r = new Random();
     
-    private void applyDurability(ItemStack hand, Damageable itemDam, Block b)
+    private void applyDurability(Player player, ItemStack hand)
     {
+        Inventory inv = player.getInventory();
+        
+        Damageable dmg = (Damageable)hand.getItemMeta();
+        
+        if(NBTAPI.getInstance() != null && dmg != null)
+        {
+            NBTItem item = new NBTItem(hand);
+    
+            if(!item.getKeys().contains("Unbreakable"))
+            {
+                if(hand.getType().getMaxDurability() <= dmg.getDamage())
+                {
+                    inv.removeItem(hand);
+            
+                    return;
+                }
+            }
+    
+            if(item.getKeys().contains("Unbreakable"))
+            {
+                dmg.setDamage(0);
+    
+                hand.setItemMeta(dmg);
+                
+                return;
+            }
+        }
+        
         boolean unbreakingLevel = hand.getItemMeta().getEnchants().containsKey(Enchantment.DURABILITY);
         
         int unb = 0;
         
-        if(NBTAPI.getInstance() == null)
-            return;
+        if(unbreakingLevel)
+            unb = hand.getItemMeta().getEnchants().get(Enchantment.DURABILITY);
         
-        NBTItem item = new NBTItem(hand);
+        int chance = (100)/(1 + unb);
         
-        if(item.getKeys().contains("Unbreakable"))
-        {
-            itemDam.setDamage(0);
-        }
-        else
-        {
-            if(unbreakingLevel)
-                unb = hand.getItemMeta().getEnchants().get(Enchantment.DURABILITY);
-            
-            int chance = (100)/(1 + unb);
-            
-            int res = r.nextInt(100 - 1) + 1;
-            
-            if(res < chance)
-                itemDam.setDamage(itemDam.getDamage() + 1);
-        }
+        int res = r.nextInt(100 - 1) + 1;
         
-        hand.setItemMeta(itemDam);
+        if(res < chance)
+            dmg.setDamage(dmg.getDamage() + 1);
+        
+        hand.setItemMeta(dmg);
     }
     
     private List<Material> getList(Material material)
