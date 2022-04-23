@@ -18,8 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BlockInterract implements Listener
 {
@@ -30,17 +29,27 @@ public class BlockInterract implements Listener
         this.plugin = plugin;
     }
     
-    private static final List<Material> COPPER_BLOCKS = List.of(Material.COPPER_BLOCK, Material.EXPOSED_COPPER, Material.WEATHERED_COPPER, Material.OXIDIZED_COPPER);
-    private static final List<Material> CUT_COPPER_BLOCKS = List.of(Material.CUT_COPPER, Material.EXPOSED_CUT_COPPER, Material.WEATHERED_CUT_COPPER, Material.OXIDIZED_CUT_COPPER);
-    private static final List<Material> SLAB_COPPER_BLOCKS = List.of(Material.CUT_COPPER_SLAB, Material.EXPOSED_CUT_COPPER_SLAB, Material.WEATHERED_CUT_COPPER_SLAB, Material.OXIDIZED_CUT_COPPER_SLAB);
-    private static final List<Material> STAIR_COPPER_BLOCKS = List.of(Material.CUT_COPPER_STAIRS, Material.EXPOSED_CUT_COPPER_STAIRS, Material.WEATHERED_CUT_COPPER_STAIRS, Material.OXIDIZED_CUT_COPPER_STAIRS);
+    private static final List<Material> COPPER_BLOCKS = List.of(
+            Material.COPPER_BLOCK, Material.EXPOSED_COPPER, Material.WEATHERED_COPPER, Material.OXIDIZED_COPPER);
+    private static final List<Material> CUT_COPPER_BLOCKS = List.of(
+            Material.CUT_COPPER, Material.EXPOSED_CUT_COPPER, Material.WEATHERED_CUT_COPPER, Material.OXIDIZED_CUT_COPPER);
+    private static final List<Material> SLAB_COPPER_BLOCKS = List.of(
+            Material.CUT_COPPER_SLAB, Material.EXPOSED_CUT_COPPER_SLAB, Material.WEATHERED_CUT_COPPER_SLAB, Material.OXIDIZED_CUT_COPPER_SLAB);
+    private static final List<Material> STAIR_COPPER_BLOCKS = List.of(
+            Material.CUT_COPPER_STAIRS, Material.EXPOSED_CUT_COPPER_STAIRS, Material.WEATHERED_CUT_COPPER_STAIRS, Material.OXIDIZED_CUT_COPPER_STAIRS);
     
     // WAX
-    private static final List<Material> WAX_COPPER_BLOCKS = List.of(Material.WAXED_COPPER_BLOCK, Material.WAXED_EXPOSED_COPPER, Material.WAXED_WEATHERED_COPPER, Material.WAXED_OXIDIZED_COPPER);
-    private static final List<Material> WAX_CUT_COPPER_BLOCKS = List.of(Material.WAXED_CUT_COPPER, Material.WAXED_EXPOSED_CUT_COPPER, Material.WAXED_WEATHERED_CUT_COPPER, Material.WAXED_OXIDIZED_CUT_COPPER);
-    private static final List<Material> WAX_SLAB_COPPER_BLOCKS = List.of(Material.WAXED_CUT_COPPER_SLAB, Material.WAXED_EXPOSED_CUT_COPPER_SLAB, Material.WAXED_WEATHERED_CUT_COPPER_SLAB, Material.WAXED_OXIDIZED_CUT_COPPER_SLAB);
-    private static final List<Material> WAX_STAIR_COPPER_BLOCKS = List.of(Material.WAXED_CUT_COPPER_STAIRS, Material.WAXED_EXPOSED_CUT_COPPER_STAIRS, Material.WAXED_WEATHERED_CUT_COPPER_STAIRS, Material.WAXED_OXIDIZED_CUT_COPPER_STAIRS);
+    private static final List<Material> WAX_COPPER_BLOCKS = List.of(
+            Material.WAXED_COPPER_BLOCK, Material.WAXED_EXPOSED_COPPER, Material.WAXED_WEATHERED_COPPER, Material.WAXED_OXIDIZED_COPPER);
+    private static final List<Material> WAX_CUT_COPPER_BLOCKS = List.of(
+            Material.WAXED_CUT_COPPER, Material.WAXED_EXPOSED_CUT_COPPER, Material.WAXED_WEATHERED_CUT_COPPER, Material.WAXED_OXIDIZED_CUT_COPPER);
+    private static final List<Material> WAX_SLAB_COPPER_BLOCKS = List.of(
+            Material.WAXED_CUT_COPPER_SLAB, Material.WAXED_EXPOSED_CUT_COPPER_SLAB, Material.WAXED_WEATHERED_CUT_COPPER_SLAB, Material.WAXED_OXIDIZED_CUT_COPPER_SLAB);
+    private static final List<Material> WAX_STAIR_COPPER_BLOCKS = List.of(
+            Material.WAXED_CUT_COPPER_STAIRS, Material.WAXED_EXPOSED_CUT_COPPER_STAIRS, Material.WAXED_WEATHERED_CUT_COPPER_STAIRS, Material.WAXED_OXIDIZED_CUT_COPPER_STAIRS);
 
+    Map<UUID, Long> lastClick = new HashMap<>();
+    
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e)
     {
@@ -50,6 +59,10 @@ public class BlockInterract implements Listener
         if(!e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
         
+        if(lastClick.containsKey(e.getPlayer().getUniqueId())
+                && System.currentTimeMillis() - lastClick.get(e.getPlayer().getUniqueId()) < 200)
+            return;
+
         Player player = e.getPlayer();
         Block clicked = e.getClickedBlock();
         
@@ -102,6 +115,8 @@ public class BlockInterract implements Listener
         {
             applyDurability(player, hand);
         }
+        
+        lastClick.put(player.getUniqueId(), System.currentTimeMillis());
     }
     
     private final Random r = new Random();

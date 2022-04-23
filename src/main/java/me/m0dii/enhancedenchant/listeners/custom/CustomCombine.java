@@ -6,6 +6,7 @@ import me.m0dii.enhancedenchant.events.CombineEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.m0dii.enhancedenchant.utils.Utils;
 import org.bukkit.ChatColor;
@@ -41,6 +42,25 @@ public class CustomCombine implements Listener
             "NETHERITE_BOOTS", "DIAMOND_BOOTS", "GOLD_BOOTS",
             "IRON_BOOTS", "LEATHER_BOOTS");
     
+    private boolean customIgnore(String ench, String tool)
+    {
+        if(!plugin.getCfg().getBoolean("enchants." + ench + ".enchantable-items.enabled", false))
+        {
+            return false;
+        }
+        
+        List<String> list = plugin.getCfg().getStringList("enchants." + ench + ".enchantable-items.items")
+                .stream().map(String::toUpperCase).toList();
+    
+        boolean whitelist = plugin.getCfg().getBoolean("enchants." + ench + ".enchantable-items.whitelist", true);
+    
+        if(whitelist && !list.contains(tool.toUpperCase())) return true;
+        
+        if(!whitelist) return list.contains(tool.toUpperCase());
+        
+        return false;
+    }
+    
     @EventHandler
     public void onCustomCombine(CombineEvent event)
     {
@@ -53,6 +73,9 @@ public class CustomCombine implements Listener
         
         if(ench.equalsIgnoreCase("bonded"))
         {
+            if(customIgnore("bonded", curr.getType().toString()))
+                return;
+            
             if(ignore(curr, CustomEnchants.BONDED))
                 return;
             
@@ -72,7 +95,9 @@ public class CustomCombine implements Listener
         
         if(ench.equalsIgnoreCase("telepathy"))
         {
-            if(!tools.contains(curr.getType().toString()))
+            if(customIgnore("telepathy", curr.getType().toString()))
+                return;
+            else if(!tools.contains(curr.getType().toString()))
                 return;
             
             if(ignore(curr, CustomEnchants.TELEPATHY))
@@ -92,7 +117,9 @@ public class CustomCombine implements Listener
         
         if(ench.equalsIgnoreCase("plow"))
         {
-            if(!hoes.contains(curr.getType().toString()))
+            if(customIgnore("plow", curr.getType().toString()))
+                return;
+            else if(!hoes.contains(curr.getType().toString()))
                 return;
             
             if(ignore(curr, CustomEnchants.PLOW))
@@ -112,7 +139,9 @@ public class CustomCombine implements Listener
         
         if(ench.equalsIgnoreCase("lava_walker"))
         {
-            if(!boots.contains(curr.getType().toString()))
+            if(customIgnore("lava_walker", curr.getType().toString()))
+                return;
+            else if(!boots.contains(curr.getType().toString()))
                 return;
             
             if(ignore(curr, CustomEnchants.LAVA_WALKER))
@@ -131,7 +160,9 @@ public class CustomCombine implements Listener
         
         if(ench.equalsIgnoreCase("oxidizing"))
         {
-            if(!tools.contains(curr.getType().toString()))
+            if(customIgnore("oxidizing", curr.getType().toString()))
+                return;
+            else if(!tools.contains(curr.getType().toString()))
                 return;
     
             if(ignore(curr, CustomEnchants.OXIDIZING))

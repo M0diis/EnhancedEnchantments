@@ -1,5 +1,10 @@
 enchants:
   telepathy:
+    enchantable-items:
+      enabled: false
+      whitelist: true
+      items:
+        - 'DIAMOND_PICKAXE'
     enabled: true
     displayname: "&b&lTelepathy I"
     lore:
