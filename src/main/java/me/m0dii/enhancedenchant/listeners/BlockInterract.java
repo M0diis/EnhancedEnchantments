@@ -1,9 +1,25 @@
 package me.m0dii.enhancedenchant.listeners;
 
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.permissions.PermissionNodes;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
 import me.m0dii.enhancedenchant.EnhancedEnchant;
 import me.m0dii.enhancedenchant.enchants.CustomEnchants;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -50,6 +66,20 @@ public class BlockInterract implements Listener
 
     Map<UUID, Long> lastClick = new HashMap<>();
     
+    private boolean canInteract(Location loc)
+    {
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") == null)
+        {
+            return true;
+        }
+        
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(loc));
+        
+        return set.queryValue(null, Flags.INTERACT) == StateFlag.State.ALLOW;
+    }
+    
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e)
     {
@@ -65,7 +95,7 @@ public class BlockInterract implements Listener
 
         Player player = e.getPlayer();
         Block clicked = e.getClickedBlock();
-        
+    
         if (!player.isSneaking())
             return;
         
@@ -82,6 +112,31 @@ public class BlockInterract implements Listener
         
         if(!hand.getItemMeta().hasEnchant(CustomEnchants.OXIDIZING))
             return;
+        
+        if(!canInteract(clicked.getLocation()))
+            return;
+    
+        if (!TownyAPI.getInstance().isWilderness(clicked.getLocation()))
+        {
+            try
+            {
+                TownBlock tb = TownyAPI.getInstance().getTownBlock(clicked.getLocation());
+    
+                if(tb != null && tb.hasTown())
+                {
+                    Town town = tb.getTownOrNull();
+                    
+                    if (town != null && !town.hasResident(player.getName()))
+                    {
+                        return;
+                    }
+                }
+            }
+            catch(NullPointerException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
         
         List<Material> blocks = getList(clicked.getType());
         
